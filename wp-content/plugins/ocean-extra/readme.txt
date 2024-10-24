@@ -2,11 +2,27 @@
 Contributors: oceanwp, apprimit, wpfleek
 Tags: widgets, meta box, metaboxes, metabox, oceanwp
 Requires at least: 5.6
-Tested up to: 6.1
-Stable tag: 2.0.6
-Requires PHP: 7.2
+Tested up to: 6.6
+Stable tag: 2.4.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+== Copyright ==
+
+Ocean Extra uses the following third-party resources:
+
+Font Awesome Fonts, Copyright Fonticons, Inc.
+License: SIL OFL 1.1 License - https://scripts.sil.org/OFL
+Source: https://fontawesome.com/
+
+Font Awesome Icons, Copyright Fonticons, Inc.
+License: CC BY 4.0 License - https://creativecommons.org/licenses/by/4.0/
+Source: https://fontawesome.com/
+
+Font Awesome Code, Copyright Fonticons, Inc.
+License: MIT License - https://opensource.org/licenses/MIT
+Source: https://fontawesome.com/
 
 == Description ==
 
@@ -32,7 +48,8 @@ Everyone deserves a polished website with expert features, and so do you.
 == Features ==
 
 Features listed below are just a fraction of the most significant Ocean Extra possibilities:
-* Host Google fonts Locally
+* Host Google fonts locally
+* Adobe Fonts integration
 * Custom templates support
 * Individual page / post control
 * Freemium website templates import
@@ -47,11 +64,16 @@ Features listed below are just a fraction of the most significant Ocean Extra po
 * Integration
 * Extra settings
 * Admin settings
+* Website preloader
 * Premium licenses panel & more
 
 = HOST GOOGLE FONTS LOCALLY =
 
-1-click solution, no font upload required. Any Google font you apply from the Customizer will load from your site automatically, making your website faster and GDPR friendly in an instant. This feature also supports the Elementor page builder and Google fonts applied through it.
+1-click solution, no font upload required. (Any Google font you apply from the Customizer)[https://docs.oceanwp.org/article/808-host-google-fonts-locally] will load from your site automatically, making your website faster and GDPR friendly in an instant. This feature also supports the Elementor page builder and Google fonts applied through it.
+
+= ADOBE FONTS INTEGRATION =
+
+Add Adobe Fonts (Typekit) to your OceanWP theme. The (integration supports Adobe fonts usage)[https://docs.oceanwp.org/article/849-how-to-add-adobe-fonts-typekit] with the OceanWP theme and plugins (Customizer), as well as Elementor.
 
 = CUSTOM TEMPLATES SUPPORT =
 
@@ -109,6 +131,10 @@ The Extra Settings panel allows you to disable or enable Ocean Extra plugin comp
 
 The Admin Settings panel offers control over additional features, like regenerating the local Google fonts CSS file, disabling the "edit" link on post archive pages which is visible to admins, and more.
 
+= WEBSITE PRELOADER =
+
+Dealing with heavy page content such as videos or slow hosting? Enable the (website preloader feature)[https://docs.oceanwp.org/article/851-oceanwp-website-preloader] on your website to reduce bounce rate, entertain visitors, brand site or more.
+
 = PREMIUM OCEAN FEATURES =
 
 Some of the most outsanding premium features controled by the Ocean Extra's OceanWP Panel include:
@@ -160,7 +186,7 @@ No. Both freemium and premium Ocean demos / website templates make use only of t
 
 = Where can I get support? =
 
-You can post your questions on the [plugin support forum](https://wordpress.org/support/plugin/ocean-extra/) or the [OceanWP support forum](https://wordpress.org/support/topic/ocean-popup-login-error/) which is mostly used by all our users.
+You can post your questions on the [plugin support forum](https://wordpress.org/support/plugin/ocean-extra/) or the [OceanWP support forum](https://wordpress.org/support/theme/oceanwp/) which is mostly used by all our users.
 If you have a premium license, you can also submit a [customer support ticket](https://oceanwp.org/support/).
 
 = How do I know it's safe to update the plugin? =
@@ -189,6 +215,129 @@ You can report problems on [this support forum](https://wordpress.org/support/pl
 11. WordPress Menu icons support feature, various icon libraries support.
 
 == Changelog ==
+
+= 2.4.1 - OCT 21 2024 =
+- Fixed: OceanWP Metabox Settings: Logo: Customizer logo doesn't get overridden on individual level (main Customizer logo always displayed).
+- Fixed: OceanWP Customizer: General Options tab not displayed with version 3.6.1 and lower.
+- Fixed: Plugin Update Notice: Breaking layout display in the plugins area on multisite.
+
+= 2.4.0 - OCT 16 2024 =
+- NEW: Customizer: Library upgraded to default WordPress ReactJS.
+- NEW: Customizer: User Interface.
+- Added: Customizer: Main panel icons for improved visual navigation and user experience.
+- Added: Customizer: Panel grouping based website role for improved visual navigation and user experience.
+- Added: OceanWP Panel: Customizer: New panels users can disable / enable per need for faster loading and visual navigation.
+- Removed: Customizer: Legacy PHP Controls.
+- Removed: OceanWP Panel: Customizer: Panels: Legacy panels.
+
+= 2.3.1 - OCT 11 2024 =
+- Added: Conditional checks for future updates.
+- Updated: Compatibility: WordPress version number.
+
+= 2.3.0 - JUL 03 2024 =
+- Fixed: Potential vulnerability patched: Report by Patchstack from June 25th 2024.
+Updated: WordPress version for compatibility.
+
+= 2.2.9 - JUN 05 2024 =
+- Fixed: Potential vulnerability patched: Wordfence report from Jun 3rd 2024. A special thanks goes towards the Wordfence team for doublechecking everything as always.
+- Fixed: WordPress Widgets: Flickr: if widget in use more than once on a page, images display with a single widget only.
+- Fixed: Customizer: Console error while Customizer in use: Store "core / interface" is already registered.
+
+= 2.2.8 - MAY 22 2024 =
+- Added: Additional support for the oceanwp_post_id() function.
+- Added: Support for new functionality for Ocean Hooks 2.1.1 version.
+- Updated: Freemius SDK to 2.7.2 version.
+- Updated: Compatibility: WordPress version.
+
+= 2.2.7 - APR 08 2024 =
+- Fixed: Potential vulnerability patched: Wordfence report from Apr 3rd 2024. A special thanks goes towards the Wordfence team for doublechecking everything as always.
+
+= 2.2.6 - MAR 12 2024 =
+- Added: Shortcode: [oceanwp_icon]: New shortcode parameter "location" to differentiate the use of specific icon libraries.  https://docs.oceanwp.org/article/779-oceanwp-icon-shortcode
+- Fixed: Theme: Lightbox feature remains enabled on Gutenberg Gallery block even if disabled via Customize > General Options > Performance. Requires the latest version of the OceanWP theme.
+
+= 2.2.5 - FEB 14 2024 =
+- Improved: Metabox Settings: Conditional logic for backend asset loading.
+- Fixed: PHP Warning: in_array() expects parameter 2 to be array, null given in .../ocean-extra/includes/post-settings/post-settings.php on line 134
+- Fixed: Potential vulnerability patched. Report by Wordfence from Feb 6th 2024.
+
+= 2.2.4 - DEC 11 2023 =
+- Updated: Font Awesome Library to 6.5.1 version.
+- Updated: Woo Fragments function: Check Woo Cart Total and Woo Cart Items Count.
+- Fixed: Missing Dependencies: oceanwp-butterbean script.
+- Fixed: Load Google Fonts Locally: incorrect check on default state.
+- Fixed: Shortcode: oceanwp_breadcrumbs: JSON error on saving when shortcode in use.
+- Fixed: Shortcode: oceanwp_woo_cart: JSON error on saving when shortcode in use.
+- Deprecated: Google+ social option from related custom OceanWP legacy WordPress widgets.
+
+= 2.2.3 - NOV 27 2023 =
+- Fixed: Potential vulnerability patched. Report by Patchstack from Nov 23rd 2023.
+
+= 2.2.2 - NOV 14 2023 =
+- Added: Metabox Settings: Image Gallery support when Classic Editor plugin is in use.
+
+= 2.2.1 - OCT 18 2023 =
+- Fixed: Facebook Widget: PHP Notice: Undefined index: like_args, stream and force_wall.
+- Fixed: Twitter Widget: PHP Notice: Undefined index: username.
+- Fixed: Mailchimp Widget: Updated API.
+- Fixed: LearnDash: Compatibility with new sidebar metabox.
+- Fixed: LifterLMS: Compatibility with new sidebar metabox.
+
+= 2.2.0 - SEP 6 2023 =
+- NEW: Metabox Settings Interface: https://docs.oceanwp.org/category/826-oceanwp-settings
+- Added: Compatibility: PHP8.2+: Menu icons.
+- Updated: Compatibility: WordPress version number.
+
+= 2.1.8 - JUL 19 2023 =
+- Updated: Freemius SDK 2.5.10 version.
+
+= 2.1.7 - MAY 23 2023 =
+- Added: Compatibility: SiteOrigin: Custom templates support.
+- Added: Compatibility: PHP 8.2.6: Creation of dynamic property Ocean_Extra::$plugin_path, Ocean_Extra::$plugin_url and ButterBean::$post_id is deprecated.
+- Tweak: JS Minify library replaced with JS Shrink for outputting custom JS from the Customizer.
+- Fixed: Uncaught Error: Undefined constant "OCEANWP_CSS_DIR_URI".
+- Removed: Redundant files for deprecated features such as Push Monkey notifications etc.
+
+= 2.1.6 - APR 10 2023 =
+- Updated: Widgets: MailChimp: widget rewritten, CURL method replaced with wp_remote_get.
+- Fixed: OceanWP Panel: Customizer: Styling import doesn't function.
+- Fixed: Fatal error: Uncaught Error: Class 'OceanWP_Customizer_Range_Control' not found in /plugins/ocean-extra/includes/preloader/customizer.php:224.
+
+= 2.1.5 - APR 5 2023 =
+- Updated: Freemius SDK to 2.5.6 version.
+- Updated: Open Graph: Order of items returned.
+- Fixed: Undefined array key "page" in /ocean-extra/includes/panel/theme-panel.php on line 45
+- Fixed: Undefined array key "page" in /ocean-extra/includes/panel/demos.php on line 944
+
+= 2.1.4 - FEB 22 2023 =
+- Fixed: Shortcodes: [oceanwp_woo_free_shipping_left]: Shortcode displaying HTML when a user reaches the free shipping threshold.
+
+= 2.1.3 - FEB 13 2023 =
+- Fixed: Shortcodes: Search: Potential vulnerability patch: WPscan report #5932906 and Patchscan report #2023-24399.
+- Fixed: Shortcodes: Woo Free Shipping Left: Potential vulnerability patch: WPscan report #5932906 and Patchscan report #2023-24399.
+- Fixed: Shortcodes: My Library templates shortcode: Potential vulnerability patch: WPscan report #5932906. A personal thanks to Erwan Le Rousseau from the WPscan team for the above and beyond assistance, patience and guidance on this matter.
+- Improved: Shortcodes: All shortcodes code revision.
+- Removed: Old theme panel files.
+
+= 2.1.2 - FEB 1 2023 =
+- Fixed: Shortcodes: Breadcrumbs: Potential vulnerability patch: Patchstack report #2023-23891
+
+= 2.1.1 - JAN 11 2023 =
+- Fixed: Performance: Disable Widgets Styleesheet: Misconfigured button action.
+
+= 2.1.0 - JAN 10 2023 =
+- NEW: Adobe Fonts Integration: OceanWP Panel > Integration.
+- NEW: Website Preloader: Customize > General Options.
+- NEW: Disable Widgets Stylesheet: Customize > General Options > Performance: Disable stylesheet for legacy WordPress widgets included only in Ocean Extra plugin if widgets not in use.
+- NEW: Disable Scroll Effect: Customize > General Options > Performance: Disable script for smooth scroll if not in use (used for anchor links).
+- NEW: Custom Offset for Scroll Effect: Customize > General Options > Performance. Add custom offset value for the smooth scroll effect.
+- Added: Typography: Preload locally-hosted Google Fonts: Customize > Typography > General.
+- Added: Codes for the upcoming plugin.
+- Updated: Language: Ocean Extra .pot file.
+- Updated: Ocean Extra readme.txt file.
+- Fixed: Ocean Gutenberg Blocks doesn't remove the Upgrade notice if it's the only premium plugin active.
+- Fixed: Compatibility: PHP 8.1+: Notices for old Theme Panel.
+- Fixed: Uncaught Error: Undefined constant "FS_CHMOD_DIR": Added additional check for default WP Constant "FS_CHMOD_DIR".
 
 = 2.0.6 - NOV 9 2022 =
 - NEW: Typography: Option to choose font format for local Google fonts feature (Customize > Typography > General).

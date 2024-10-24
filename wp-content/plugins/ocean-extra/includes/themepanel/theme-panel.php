@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Scripts Panel
  *
@@ -8,7 +7,7 @@
  * @author OceanWP
  */
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,7 +24,7 @@ class Ocean_Extra_New_Theme_Panel {
 		require_once OE_PATH . 'includes/themepanel/includes/classes/class-system-status.php';
 
 		$oe_svg_support_active_status = get_option( 'oe_svg_support_active_status', 'no' );
-		if ( $oe_svg_support_active_status == 'yes' ) {
+		if ( $oe_svg_support_active_status === 'yes' ) {
 			require_once OE_PATH . 'includes/themepanel/includes/classes/class-svg-sanitizer.php';
 		}
 
@@ -53,6 +52,7 @@ class Ocean_Extra_New_Theme_Panel {
 		add_filter( 'oceanwp_theme_panel_pane_customizer_import_export', array( $this, 'customizer_import_export_part' ) );
 		add_filter( 'oceanwp_theme_panel_pane_customizer_controls', array( $this, 'customizer_controls_part' ) );
 
+		add_filter( 'oceanwp_theme_panel_pane_extra_settings_adobe_fonts', array( $this, 'extra_settings_adobe_fonts_part' ) );
 		add_filter( 'oceanwp_theme_panel_pane_extra_settings_metaboxes', array( $this, 'extra_settings_metaboxes_part' ) );
 		add_filter( 'oceanwp_theme_panel_pane_extra_settings_widgets', array( $this, 'extra_settings_widgets_part' ) );
 		add_filter( 'oceanwp_theme_panel_pane_extra_settings_my_library', array( $this, 'extra_settings_my_library_part' ) );
@@ -86,12 +86,12 @@ class Ocean_Extra_New_Theme_Panel {
 
 		$current_screen = get_current_screen();
 		// Only load scripts when needed
-		if ( 'toplevel_page_oceanwp' != $current_screen->id ) {
+		if ( 'toplevel_page_oceanwp' !== $current_screen->id ) {
 			return;
 		}
 
 		// JS
-		wp_enqueue_script( 'oceanwp-scripts-themepanel', plugins_url( '/assets/js/theme-panel.min.js', __FILE__ ), OE_VERSION, true );
+		wp_enqueue_script( 'oceanwp-scripts-themepanel', plugins_url( '/assets/js/theme-panel.js', __FILE__ ), OE_VERSION, true );
 
 		wp_localize_script(
 			'oceanwp-scripts-themepanel',
@@ -128,9 +128,16 @@ class Ocean_Extra_New_Theme_Panel {
 			if ( ! is_array( $value ) ) {
 				$value = trim( $value );
 			}
-			$value = wp_unslash( $value );
+			$value = isset( $value ) ? (array) $value : array();
+			$value = array_map( 'sanitize_text_field', $value );
 			$value = self::validate_panels( $value );
 		}
+
+		// Ensure $value is an array and hold default settings even if all settings are false.
+		if ($value === null || !is_array($value)) {
+			$value = array_fill_keys(array_keys(self::get_panels()), false);
+		}
+
 		update_option( $option, $value );
 
 		wp_send_json_success(
@@ -159,7 +166,8 @@ class Ocean_Extra_New_Theme_Panel {
 		$value  = array();
 		if ( isset( $params[ $option ] ) ) {
 			$value = $params[ $option ];
-			$value = wp_unslash( $value );
+			$value = isset( $value ) ? (array) $value : array();
+			$value = array_map( 'sanitize_text_field', $value );
 		}
 		update_option( $option, $value );
 
@@ -185,7 +193,7 @@ class Ocean_Extra_New_Theme_Panel {
 			);
 		}
 
-		if ( $_POST['settings_for'] == 'white_label' ) {
+		if ( $_POST['settings_for'] === 'white_label' ) {
 			if( class_exists('Ocean_White_Label') ) {
 				$settings = Ocean_White_Label::get_white_label_settings();
 				$this->save_white_label_settings( $settings, $params );
@@ -214,6 +222,17 @@ class Ocean_Extra_New_Theme_Panel {
 			}
 		}
 
+		if( $_POST['settings_for'] === 'adobe_fonts' && $params['owp_integrations'][ 'adobe_fonts_integration' ] === '1' ) {
+			$check_project_id_result = OceanWP_Adobe_Font()->check_project_id();
+			if( $check_project_id_result['status'] !== 'success' ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'Project ID is wrong.', 'ocean-extra' ),
+					)
+				);
+			}
+		}
+
 		wp_send_json_success(
 			array(
 				'message' => esc_html__( 'Settings saved successfully.', 'ocean-extra' ),
@@ -238,15 +257,15 @@ class Ocean_Extra_New_Theme_Panel {
 		$value  = null;
 		if ( isset( $params['value'] ) ) {
 			$value = $params['value'];
-			if ( $value == 'true' ) {
+			if ( $value === 'true' ) {
 				$value = true;
-			} elseif ( $value == 'false' ) {
+			} elseif ( $value === 'false' ) {
 				$value = false;
 			}
 			if ( ! is_array( $value ) && ! is_bool( $value ) ) {
 				$value = trim( $value );
 			}
-			$value = wp_unslash( $value );
+			$value = sanitize_text_field( wp_unslash( $value ) );
 		}
 		update_option( $option, $value );
 
@@ -377,7 +396,7 @@ class Ocean_Extra_New_Theme_Panel {
 		// Process import file
 		$res = self::process_import_file( $file['file'] );
 
-		if ( $res['status'] == 'updated' ) {
+		if ( $res['status'] === 'updated' ) {
 			wp_send_json_success(
 				array(
 					'message' => 'Success',
@@ -479,34 +498,59 @@ class Ocean_Extra_New_Theme_Panel {
 	 * Return customizer panels
 	 */
 	public static function get_panels() {
-		$panels = array(
-			'oe_general_panel'        => array(
+		$theme = wp_get_theme();
+		$version = $theme->get( 'Version' );
+
+		$panels = array();
+
+		if ( version_compare( $version, '4.0.0', '>' ) ) {
+			$panels['oe_styles_and_settings_panel'] = array(
+				'label' => esc_html__( 'Site Style & Settings Panel', 'ocean-extra' ),
+			);
+			$panels['oe_colors_panel'] = array(
+				'label' => esc_html__( 'Colors Panel', 'ocean-extra' ),
+			);
+			$panels['oe_site_page_settings_panel'] = array(
+				'label' => esc_html__( 'Site Page Settings Panel', 'ocean-extra' ),
+			);
+			$panels['oe_site_performance_panel'] = array(
+				'label' => esc_html__( 'Site Performance Panel', 'ocean-extra' ),
+			);
+			$panels['oe_seo_settings_panel'] = array(
+				'label' => esc_html__( 'SEO Panel', 'ocean-extra' ),
+			);
+		}
+
+		if ( version_compare( $version, '4.0.0', '<' ) ) {
+			$panels['oe_general_panel'] = array(
 				'label' => esc_html__( 'General Panel', 'ocean-extra' ),
-			),
-			'oe_typography_panel'     => array(
-				'label' => esc_html__( 'Typography Panel', 'ocean-extra' ),
-			),
-			'oe_topbar_panel'         => array(
-				'label' => esc_html__( 'Top Bar Panel', 'ocean-extra' ),
-			),
-			'oe_header_panel'         => array(
-				'label' => esc_html__( 'Header Panel', 'ocean-extra' ),
-			),
-			'oe_blog_panel'           => array(
-				'label' => esc_html__( 'Blog Panel', 'ocean-extra' ),
-			),
-			'oe_sidebar_panel'        => array(
-				'label' => esc_html__( 'Sidebar Panel', 'ocean-extra' ),
-			),
-			'oe_footer_widgets_panel' => array(
-				'label' => esc_html__( 'Footer Widgets Panel', 'ocean-extra' ),
-			),
-			'oe_footer_bottom_panel'  => array(
-				'label' => esc_html__( 'Footer Bottom Panel', 'ocean-extra' ),
-			),
-			'oe_custom_code_panel'    => array(
-				'label' => esc_html__( 'Custom CSS/JS Panel', 'ocean-extra' ),
-			),
+			);
+		}
+
+		// Panels that are included regardless of the theme version
+		$panels['oe_typography_panel'] = array(
+			'label' => esc_html__( 'Typography Panel', 'ocean-extra' ),
+		);
+		$panels['oe_topbar_panel'] = array(
+			'label' => esc_html__( 'Top Bar Panel', 'ocean-extra' ),
+		);
+		$panels['oe_header_panel'] = array(
+			'label' => esc_html__( 'Header Panel', 'ocean-extra' ),
+		);
+		$panels['oe_blog_panel'] = array(
+			'label' => esc_html__( 'Blog Panel', 'ocean-extra' ),
+		);
+		$panels['oe_sidebar_panel'] = array(
+			'label' => esc_html__( 'Sidebar Panel', 'ocean-extra' ),
+		);
+		$panels['oe_footer_widgets_panel'] = array(
+			'label' => esc_html__( 'Footer Widgets Panel', 'ocean-extra' ),
+		);
+		$panels['oe_footer_bottom_panel'] = array(
+			'label' => esc_html__( 'Footer Bottom Panel', 'ocean-extra' ),
+		);
+		$panels['oe_custom_code_panel'] = array(
+			'label' => esc_html__( 'Custom CSS/JS Panel', 'ocean-extra' ),
 		);
 
 		// Apply filters and return
@@ -572,6 +616,9 @@ class Ocean_Extra_New_Theme_Panel {
 		return OE_PATH . 'includes/themepanel/views/panes/customizer-controls.php';
 	}
 
+	function extra_settings_adobe_fonts_part() {
+		return OE_PATH . 'includes/themepanel/views/panes/extra-settings-adobe-fonts.php';
+	}
 	function extra_settings_metaboxes_part() {
 		return OE_PATH . 'includes/themepanel/views/panes/extra-settings-metaboxes.php';
 	}
@@ -621,7 +668,7 @@ class Ocean_Extra_New_Theme_Panel {
 
 	function control_svg_mime_type( $types ) {
 		$oe_svg_support_active_status = get_option( 'oe_svg_support_active_status', 'no' );
-		if ( $oe_svg_support_active_status == 'no' && ! empty( $types['svg'] ) ) {
+		if ( $oe_svg_support_active_status === 'no' && ! empty( $types['svg'] ) ) {
 			unset( $types['svg'] );
 		}
 		return $types;
@@ -647,6 +694,17 @@ class Ocean_Extra_New_Theme_Panel {
 		$settings = array(
 			'mailchimp_api_key' => get_option( 'owp_mailchimp_api_key' ),
 			'mailchimp_list_id' => get_option( 'owp_mailchimp_list_id' ),
+		);
+
+		return apply_filters( 'ocean_integrations_settings', $settings );
+	}
+
+	public static function get_adobe_fonts_settings() {
+		$settings = array(
+			'adobe_fonts_integration' => get_option( 'owp_adobe_fonts_integration' ),
+			'adobe_fonts_integration_project_id' => get_option( 'owp_adobe_fonts_integration_project_id' ),
+			'adobe_fonts_integration_enable_customizer' => get_option( 'owp_adobe_fonts_integration_enable_customizer' ),
+			'adobe_fonts_integration_enable_elementor' => get_option( 'owp_adobe_fonts_integration_enable_elementor' ),
 		);
 
 		return apply_filters( 'ocean_integrations_settings', $settings );
@@ -703,7 +761,7 @@ class Ocean_Extra_New_Theme_Panel {
 				} else {
 					update_option( 'oceanwp_hide_theme_panel_sidebar', false );
 				}*/
-			} elseif ( in_array( $key, array( 'hide_themes_customizer', 'hide_box', 'hide_changelog', 'whitelabel_oceanwp_panel', 'hide_small_nav_menu', 'hide_help_section', 'hide_download_section', 'hide_love_corner_section' ) ) ) {
+			} elseif ( in_array( $key, array( 'hide_themes_customizer', 'hide_info_customizer', 'hide_box', 'hide_changelog', 'whitelabel_oceanwp_panel', 'hide_small_nav_menu', 'hide_help_section', 'hide_download_section', 'hide_love_corner_section' ) ) ) {
 				if ( isset( $params['oceanwp_branding'][ $key ] ) ) {
 					update_option( 'oceanwp_' . $key, true );
 				} else {
@@ -757,7 +815,7 @@ class Ocean_Extra_New_Theme_Panel {
 	}
 
 	function deactive_plugins_controll( $plugin, $network_deactivating ) {
-		if ( $plugin == 'anywhere-elementor/anywhere-elementor.php' ) {
+		if ( $plugin === 'anywhere-elementor/anywhere-elementor.php' ) {
 			$metabox_posttypes_settings = get_option( 'oe_metabox_posttypes_settings', -1 );
 			if ( $metabox_posttypes_settings !== -1 ) {
 				if ( ! empty( $metabox_posttypes_settings['ae_global_templates'] ) ) {

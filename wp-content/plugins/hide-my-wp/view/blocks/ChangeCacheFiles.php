@@ -1,9 +1,10 @@
-<?php if(!isset($view)) return; ?>
+<?php defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' ); ?>
+<?php if ( ! isset( $view ) ) { return; } ?>
 <?php if (HMWP_Classes_Tools::getOption('hmwp_mode') <> 'default' && HMWP_Classes_Tools::isCachePlugin() ) { ?>
 <div class="card col-sm-12 m-0 mb-2 p-0 rounded-0">
     <div class="card-body f-gray-dark text-center">
         <h4 class="card-title"><?php echo esc_html__('Change Paths in Cached Files', 'hide-my-wp'); ?></h4>
-
+        <div class="border-top mt-2 pt-2"></div>
         <div class="col-sm-12 row mb-1 ml-1 p-2">
 
             <div class="col-sm-12 my-2 p-0 text-center">

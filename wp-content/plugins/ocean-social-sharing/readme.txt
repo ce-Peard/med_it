@@ -2,9 +2,9 @@
 Contributors: oceanwp, apprimit, wpfleek
 Tags: social, social sharing, social share, share, oceanwp
 Requires at least: 5.6
-Tested up to: 6.0.0
-Requires PHP: 7.2
-Stable tag: 2.0.2
+Tested up to: 6.6
+Requires PHP: 7.4
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,14 @@ Support: https://oceanwp.org/support/
 Documentation: https://docs.oceanwp.org/
 Extensions: https://oceanwp.org/extensions/
 Email: support@oceanwp.org
+
+== Copyright ==
+
+Ocean Social Sharing uses the following third-party resources:
+
+Font Awesome Icons, Copyright Dave Gandy
+License: CC BY 4.0 License - https://creativecommons.org/licenses/by/4.0/
+Source: https://fontawesome.com/
 
 == Description ==
 
@@ -55,6 +63,34 @@ This plugin will only function with the [OceanWP](https://oceanwp.org/) theme.
 9. Settings.
 
 == Changelog ==
+
+= 2.2.0 - OCT 16 2024 =
+- NEW: Customizer: Library upgraded to default WordPress ReactJS.
+- NEW: Customizer: Customizer Controls.
+- NEW: Customizer: User Interface.
+- NEW: Customizer: Reorganized settings for improved user experience.
+- Fixed: Special Character decode of title for X, LinkedIn and Reddit.
+- Removed: Customizer: Legacy PHP Controls.
+
+= 2.0.8 - OCT 11 2024 =
+- Added: Conditional checks for future updates.
+- Updated: Compatibility: WordPress version number.
+
+= 2.0.7 - MAY 20 2024 =
+- Updated: Compatibility: WordPress version number.
+
+= 2.0.6 - DEC 11 2023 =
+- Updated: Font Awesome Library to 6.5.1 version.
+- Deprecated: Google+ social sharing option.
+
+= 2.0.5 - SEP 6 2023 =
+- Updated: Compatibility: WordPress version number.
+
+= 2.0.4 - MAY 23 2023 =
+- Added: Compatibility: PHP 8.2.6: Creation of dynamic property Ocean_Social_Sharing::$plugin_path and Ocean_Social_Sharing::$plugin_url is deprecated.
+
+= 2.0.3 - MAR 29 2023 =
+- Updated: Version numbers for compatibility.
 
 = 2.0.2 =
 - Improved: Theme Panel.
