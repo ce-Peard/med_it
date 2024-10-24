@@ -62,8 +62,10 @@
     .wp-block-gallery,
     .wp-block-video,
     .wp-block-quote,
+    .wp-block-table,
     .wp-block-text-columns,
     .wp-block-code,
+    .wp-block-preformatted,
     .entry-content ul,
     .entry-content ol,
     .wp-block-cover-text,
@@ -76,7 +78,8 @@
     }
 
     .wp-block-columns.alignfull,
-    .wp-block-columns.alignwide {
+    .wp-block-columns.alignwide,
+    .elementor-section {
         h1,
         h2,
         h3,
@@ -90,7 +93,9 @@
         .wp-block-gallery,
         .wp-block-video,
         .wp-block-quote,
+        .wp-block-table,
         .wp-block-text-columns,
+        .wp-block-preformatted,
         .wp-block-code,
         ul,
         ol,
@@ -219,6 +224,11 @@
     &.is-style-wide:not(.size-full) {
         max-width: 700px;
     }
+}
+
+.elementor-edit-area ul.elementor-editor-element-settings {
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 /*------------------------------------*

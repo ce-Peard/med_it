@@ -17,7 +17,7 @@ function ocean_get_svg_icon() {
 
 	$is_svg = get_theme_mod( 'ocean_disable_svg_icons', 'enabled' );
 
-	if ( ( true === $is_svg || 'enabled' === $is_svg ) || 'svg' !== oceanwp_theme_icon_class() ) {
+	if ( ( true === $is_svg || 'disabled' === $is_svg ) || 'svg' !== oceanwp_theme_icon_class() ) {
 		return;
 	}
 
@@ -39,9 +39,9 @@ function ocean_comp_svg_disable_option() {
 	$is_svg = get_theme_mod( 'ocean_disable_svg_icons', 'enabled' );
 
 	if ( true === $is_svg ) {
-		set_theme_mod( 'ocean_disable_svg_icons', 'enabled' );
-	} else if ( false === $is_svg ) {
 		set_theme_mod( 'ocean_disable_svg_icons', 'disabled' );
+	} else if ( false === $is_svg ) {
+		set_theme_mod( 'ocean_disable_svg_icons', 'enabled' );
 	}
 }
 add_action( 'init', 'ocean_comp_svg_disable_option' );
@@ -64,7 +64,7 @@ function ocean_svg_icon( $args = array(), $location = true ) {
 
 	$is_svg = get_theme_mod( 'ocean_disable_svg_icons', 'enabled' );
 
-	if ( ( true === $is_svg || 'enabled' === $is_svg ) || 'svg' !== oceanwp_theme_icon_class() ) {
+	if ( ( true === $is_svg || 'disabled' === $is_svg ) || 'svg' !== oceanwp_theme_icon_class() ) {
 		return;
 	}
 
@@ -83,15 +83,16 @@ function ocean_svg_icon( $args = array(), $location = true ) {
 		'fallback'    => false,
 	);
 
+	// Get icon class.
+	$svg         = '';
+	$has_icon    = '';
+	$theme_icons = oceanwp_theme_icons();
+	$icon_class  = oceanwp_theme_icon_class();
+
 	// Parse args.
 	$args = wp_parse_args( $args, $defaults );
 
 	if ( empty( $args['icon'] ) || 'none' === $args['icon'] ) {
-		return;
-	}
-
-	// Define an icon.
-	if ( false === array_key_exists( $args['icon'], oceanwp_theme_icons() ) ) {
 		return;
 	}
 
@@ -109,17 +110,16 @@ function ocean_svg_icon( $args = array(), $location = true ) {
 		$aria_labelledby = ' aria-labelledby="title desc"';
 	}
 
-	// Get icon class.
-	$svg         = '';
-	$has_icon    = '';
-	$theme_icons = oceanwp_theme_icons();
-	$icon_class  = oceanwp_theme_icon_class();
-
+	// Check if $args['icon'] is set and not empty
 	if ( false === $location ) {
-		$has_icon = $theme_icons[ $args['icon'] ][ $icon_class ];
+		if (isset($theme_icons[$args['icon']])) {
+			$has_icon = $theme_icons[$args['icon']][$icon_class];
+		}
 	} else {
-		$has_icon = esc_attr( $args['icon'] );
+		// Set a default icon if $args['icon'] is not set or empty
+		$has_icon = $args['icon'];
 	}
+
 
 	$class = '';
 	if ( ! empty( $args['class'] ) ) {
@@ -207,7 +207,7 @@ function ocean_svg_print_icon( $args = array(), $echo = true ) {
  *
  * @return string SVG Icon.
  */
-function ocean_svg( $icon, $echo = true, $class = '', $title = '', $desc = '', $aria_hidden = true, $fallback = false ) {
+function ocean_svg( $icon, $location = true, $echo = true, $class = '', $title = '', $desc = '', $aria_hidden = true, $fallback = false ) {
 
 	$owp_icon = wp_kses(
 		ocean_svg_icon(
@@ -219,7 +219,7 @@ function ocean_svg( $icon, $echo = true, $class = '', $title = '', $desc = '', $
 				'area_hidden' => $aria_hidden,
 				'fallback'    => $fallback,
 			),
-			false
+			$location
 		),
 		ocean_svg_icon_allowed_html()
 	);

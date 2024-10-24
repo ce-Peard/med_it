@@ -607,6 +607,47 @@
     .form-row::after {
       clear: both;
     }
+
+    .password-input {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			position: relative;
+
+			input[type="password"] {
+				padding-right: 2.5rem;
+			}
+
+			/* Hide the Edge "reveal password" native button */
+			input::-ms-reveal {
+				display: none;
+			}
+		}
+
+		.show-password-input {
+			position: absolute;
+			right: 0.7em;
+			top: 0.7em;
+			cursor: pointer;
+		}
+
+		.show-password-input::after {
+      font-family: "Font Awesome 6 Free";
+      speak: never;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      margin-left: 0.618em;
+      content: "\f06e";
+      text-decoration: none;
+		}
+
+		.show-password-input.display-password::after {
+			color: #585858;
+		}
+
     &.login .lost_password {
       margin: 0;
     }
@@ -648,7 +689,7 @@
       }
 
       &.product.has-rating .woo-entry-inner .star-rating {
-        margin-right: 0;
+        margin-left: auto;
       }
     }
     &.archives-col-1 .product {
@@ -2190,6 +2231,9 @@
     border-color: #bbb;
   }
 }
+.select2-container--open {
+  z-index: 99999;
+}
 @-webkit-keyframes spin {
   25% {
     -webkit-transform: rotate(270deg);
@@ -2549,10 +2593,21 @@ ul {
       margin-top: 30px;
     }
   }
+
+  h3#order_review_heading,
   #order_review {
     float: right;
     width: 48%;
   }
+
+  .e-checkout__order_review {
+    h3#order_review_heading,
+    #order_review {
+      float: none;
+      width: 100%;
+    }
+  }
+
   .woocommerce-account-fields {
     display: inline-block;
     width: 100%;
@@ -2678,10 +2733,6 @@ ul {
         }
       }
     }
-  }
-  h3#order_review_heading {
-    float: right;
-    width: 48%;
   }
   .place-order .terms {
     margin: 0 0 8px;
@@ -3129,9 +3180,9 @@ del .amount {
   }
 }
 
-.woocommerce .owp-thumbs-layout-vertical span.onsale {
-  left: 15% !important;
-}
+// .woocommerce .owp-thumbs-layout-vertical span.onsale {
+//   left: 15% !important;
+// }
 
 /* Sales Badge Responsive */
 

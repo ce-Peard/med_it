@@ -66,6 +66,9 @@ final class Ocean_Elementor_Widgets {
 	 * @since   1.0.0
 	 */
 	public $version;
+	// Déclaration des propriétés $plugin_url et $plugin_path dans la classe
+	public $plugin_url;
+	public $plugin_path;
 
 	// Admin - Start
 	/**
