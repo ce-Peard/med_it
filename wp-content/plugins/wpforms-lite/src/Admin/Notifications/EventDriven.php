@@ -88,7 +88,7 @@ class EventDriven {
 	 */
 	private function allow_load() {
 
-		return wpforms()->get( 'notifications' )->has_access() || wp_doing_cron();
+		return wpforms()->obj( 'notifications' )->has_access() || wp_doing_cron();
 	}
 
 	/**
@@ -123,7 +123,7 @@ class EventDriven {
 		 */
 		$is_debug = (bool) apply_filters( 'wpforms_admin_notifications_event_driven_update_events_debug', false );
 
-		$wpforms_notifications = wpforms()->get( 'notifications' );
+		$wpforms_notifications = wpforms()->obj( 'notifications' );
 
 		foreach ( $this->get_notifications() as $slug => $notification ) {
 
@@ -355,23 +355,23 @@ class EventDriven {
 		global $wpdb;
 
 		$count              = 0;
-		$entry_handler      = wpforms()->get( 'entry' );
-		$entry_meta_handler = wpforms()->get( 'entry_meta' );
+		$entry_handler      = wpforms()->obj( 'entry' );
+		$entry_meta_handler = wpforms()->obj( 'entry_meta' );
 
 		if ( ! $entry_handler || ! $entry_meta_handler ) {
 			return $count;
 		}
 
-		$query = "SELECT COUNT({$entry_handler->primary_key})
-				FROM {$entry_handler->table_name}
-				WHERE {$entry_handler->primary_key}
+		$query = "SELECT COUNT( $entry_handler->primary_key )
+				FROM $entry_handler->table_name
+				WHERE $entry_handler->primary_key
 				NOT IN (
 					SELECT entry_id
-					FROM {$entry_meta_handler->table_name}
+					FROM $entry_meta_handler->table_name
 					WHERE type = 'backup_id'
 				);";
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$count = (int) $wpdb->get_var( $query );
 
 		return $count;
@@ -388,7 +388,7 @@ class EventDriven {
 	 */
 	private function get_forms( $posts_per_page ) {
 
-		$forms = wpforms()->get( 'form' )->get(
+		$forms = wpforms()->obj( 'form' )->get(
 			'',
 			[
 				'posts_per_page'         => (int) $posts_per_page,
@@ -520,7 +520,10 @@ class EventDriven {
 			'welcome-message'        => [
 				'id'        => 'welcome-message',
 				'title'     => esc_html__( 'Welcome to WPForms!', 'wpforms-lite' ),
-				'content'   => esc_html__( 'We’re grateful that you chose WPForms for your website! Now that you’ve installed the plugin, you’re less than 5 minutes away from publishing your first form. To make it easy, we’ve got 500+ form templates to get you started!', 'wpforms-lite' ),
+				'content'   => sprintf( /* translators: %s - number of templates. */
+					esc_html__( 'We’re grateful that you chose WPForms for your website! Now that you’ve installed the plugin, you’re less than 5 minutes away from publishing your first form. To make it easy, we’ve got %s form templates to get you started!', 'wpforms-lite' ),
+					'2000+'
+				),
 				'btns'      => [
 					'main' => [
 						'url'  => admin_url( 'admin.php?page=wpforms-builder' ),
@@ -589,7 +592,10 @@ class EventDriven {
 						'license' => [
 							'lite'  => [
 								'url'  => $this->add_query_arg(
-									[ 'utm_content' => 'Surveys and Polls Upgrade Lite' ],
+									[
+										'utm_content' => 'Surveys and Polls Upgrade Lite',
+										'utm_locale'  => wpforms_sanitize_key( get_locale() ),
+									],
 									'https://wpforms.com/lite-upgrade/'
 								),
 								'text' => esc_html__( 'Upgrade Now', 'wpforms-lite' ),
@@ -639,7 +645,10 @@ class EventDriven {
 						'license' => [
 							'lite'  => [
 								'url'  => $this->add_query_arg(
-									[ 'utm_content' => 'Form Abandonment Upgrade Lite' ],
+									[
+										'utm_content' => 'Form Abandonment Upgrade Lite',
+										'utm_locale'  => wpforms_sanitize_key( get_locale() ),
+									],
 									'https://wpforms.com/lite-upgrade/'
 								),
 								'text' => esc_html__( 'Upgrade Now', 'wpforms-lite' ),
@@ -680,20 +689,6 @@ class EventDriven {
 				'offset'    => 60 * DAY_IN_SECONDS,
 				'condition' => ! defined( 'WPFORMS_FORM_ABANDONMENT_VERSION' ),
 			],
-			'translation-community'  => [
-				'id'        => 'translation-community',
-				'title'     => esc_html__( 'WPForms Needs Your Translation Skills!', 'wpforms-lite' ),
-				'content'   => esc_html__( 'Did you know that WPForms has its own Translation Community? We’re on the lookout for skilled translators to help make WPForms truly accessible to our millions of users around the world. You can earn WPForms swag and a free Pro license. Want to get involved?', 'wpforms-lite' ),
-				'btns'      => [
-					'main' => [
-						'url'  => 'https://wpforms.com/translate/',
-						'text' => esc_html__( 'Join Now', 'wpforms-lite' ),
-					],
-				],
-				// 90 days after activation/upgrade.
-				'offset'    => 90 * DAY_IN_SECONDS,
-				'condition' => $this->has_form() && ! $this->is_english_site(),
-			],
 			'ideas'                  => [
 				'id'        => 'ideas',
 				'title'     => esc_html__( 'What’s Your Dream WPForms Feature?', 'wpforms-lite' ),
@@ -717,7 +712,10 @@ class EventDriven {
 						'license' => [
 							'lite'  => [
 								'url'  => $this->add_query_arg(
-									[ 'utm_content' => 'User Journey Upgrade Lite' ],
+									[
+										'utm_content' => 'User Journey Upgrade Lite',
+										'utm_locale'  => wpforms_sanitize_key( get_locale() ),
+									],
 									'https://wpforms.com/lite-upgrade/'
 								),
 								'text' => esc_html__( 'Upgrade Now', 'wpforms-lite' ),

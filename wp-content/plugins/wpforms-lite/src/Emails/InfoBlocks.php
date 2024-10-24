@@ -30,6 +30,7 @@ class InfoBlocks {
 			return $this->fetch_all();
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$contents = file_get_contents( $cache_file );
 		$contents = json_decode( $contents, true );
 
@@ -81,7 +82,7 @@ class InfoBlocks {
 	 */
 	protected function verify_fetched( $fetched ) {
 
-		$info = array();
+		$info = [];
 
 		if ( ! \is_array( $fetched ) ) {
 			return $info;
@@ -115,13 +116,15 @@ class InfoBlocks {
 	protected function get_by_license() {
 
 		$data     = $this->get_all();
-		$filtered = array();
+		$filtered = [];
 
 		if ( empty( $data ) || ! \is_array( $data ) ) {
 			return $filtered;
 		}
 
-		$license_type = \wpforms_setting( 'type', false, 'wpforms_license' );
+		// When there is no license, we assume it's a Lite version.
+		// This is needed to show blocks for Lite users, as they don't have a license type.
+		$license_type = wpforms_setting( 'type', 'lite', 'wpforms_license' );
 
 		foreach ( $data as $key => $item ) {
 
@@ -152,7 +155,7 @@ class InfoBlocks {
 	protected function get_first_with_id( $data ) {
 
 		if ( empty( $data ) || ! \is_array( $data ) ) {
-			return array();
+			return [];
 		}
 
 		foreach ( $data as $item ) {
@@ -162,7 +165,7 @@ class InfoBlocks {
 			}
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -175,7 +178,7 @@ class InfoBlocks {
 	public function get_next() {
 
 		$data  = $this->get_by_license();
-		$block = array();
+		$block = [];
 
 		if ( empty( $data ) || ! \is_array( $data ) ) {
 			return $block;
@@ -204,27 +207,28 @@ class InfoBlocks {
 	 */
 	public function register_sent( $info_block ) {
 
-		$block_id = isset( $info_block['id'] ) ? \absint( $info_block['id'] ) : false;
+		$block_id = isset( $info_block['id'] ) ? absint( $info_block['id'] ) : false;
 
 		if ( empty( $block_id ) ) {
 			return;
 		}
 
 		$option_name = 'wpforms_email_summaries_info_blocks_sent';
-		$blocks      = \get_option( $option_name );
+		$blocks      = get_option( $option_name );
 
-		if ( empty( $blocks ) || ! \is_array( $blocks ) ) {
-			\update_option( $option_name, array( $block_id ) );
+		if ( empty( $blocks ) || ! is_array( $blocks ) ) {
+			update_option( $option_name, [ $block_id ] );
+
 			return;
 		}
 
-		if ( \in_array( $block_id, $blocks, true ) ) {
+		if ( in_array( $block_id, $blocks, true ) ) {
 			return;
 		}
 
 		$blocks[] = $block_id;
 
-		\update_option( $option_name, $blocks );
+		update_option( $option_name, $blocks );
 	}
 
 	/**
@@ -271,6 +275,7 @@ class InfoBlocks {
 
 		$info_blocks = $this->fetch_all();
 
-		file_put_contents( $file_path, wp_json_encode( $info_blocks ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+		file_put_contents( $file_path, wp_json_encode( $info_blocks ) );
 	}
 }

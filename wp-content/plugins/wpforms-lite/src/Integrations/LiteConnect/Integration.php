@@ -34,6 +34,15 @@ class Integration extends API {
 	const LITE_CONNECT_ENTRIES_COUNT_OPTION = 'wpforms_lite_connect_entries_count';
 
 	/**
+	 * Post meta name to store the total count of Lite Connect form entries.
+	 *
+	 * @since 1.7.9
+	 *
+	 * @var string
+	 */
+	const LITE_CONNECT_FORM_ENTRIES_COUNT_META = 'wpforms_lite_connect_form_entries_count';
+
+	/**
 	 * Integration constructor.
 	 *
 	 * @since 1.7.4
@@ -179,7 +188,7 @@ class Integration extends API {
 	 */
 	private function refresh_access_token_task() {
 
-		$tasks = wpforms()->get( 'tasks' );
+		$tasks = wpforms()->obj( 'tasks' );
 
 		if ( $tasks instanceof Tasks && ! $tasks->is_scheduled( RefreshAccessTokenTask::LITE_CONNECT_TASK ) ) {
 			( new RefreshAccessTokenTask() )->create();
@@ -195,7 +204,7 @@ class Integration extends API {
 	 */
 	public static function get_option_name() {
 
-		if ( defined( 'WPFORMS_LITE_CONNECT_STAGING' ) && WPFORMS_LITE_CONNECT_STAGING ) {
+		if ( self::is_staging() ) {
 			return API::STAGING_LITE_CONNECT_OPTION;
 		}
 
@@ -212,6 +221,20 @@ class Integration extends API {
 	public static function get_entries_count() {
 
 		return (int) get_option( self::LITE_CONNECT_ENTRIES_COUNT_OPTION, 0 );
+	}
+
+	/**
+	 * Get the Lite Connect form entries count.
+	 *
+	 * @since 1.7.9
+	 *
+	 * @param int $form_id The form ID.
+	 *
+	 * @return int The form entries count.
+	 */
+	public static function get_form_entries_count( $form_id ) {
+
+		return (int) get_post_meta( $form_id, self::LITE_CONNECT_FORM_ENTRIES_COUNT_META, true );
 	}
 
 	/**
@@ -378,5 +401,57 @@ class Integration extends API {
 		}
 
 		$this->get_access_token( $this->get_site_key(), true );
+	}
+
+	/**
+	 * Determine if Lite Connect staging is used.
+	 *
+	 * @since 1.9.1
+	 *
+	 * @return bool
+	 */
+	private static function is_staging(): bool {
+
+		return defined( 'WPFORMS_LITE_CONNECT_STAGING' ) && WPFORMS_LITE_CONNECT_STAGING;
+	}
+
+	/**
+	 * Get the site credentials.
+	 *
+	 * @since 1.9.1
+	 *
+	 * @return array
+	 */
+	public static function get_site_credentials(): array {
+
+		$settings = (array) get_option( self::get_option_name(), [] );
+
+		if ( ! empty( $settings['site']['id'] ) && ! empty( $settings['access_token']['access_token'] ) ) {
+			return [
+				'site_id'      => $settings['site']['id'],
+				'access_token' => $settings['access_token']['access_token'],
+			];
+		}
+
+		$instance = ( new self() );
+
+		// Try to get the site id from the wp-config.php file.
+		$debug_site_id = $instance->get_debug_setting( 'id' );
+
+		if ( empty( $debug_site_id ) ) {
+			return [];
+		}
+
+		$access_token = $instance->get_access_token( $instance->get_site_key() );
+
+		if ( ! $access_token ) {
+			return [];
+		}
+
+		return [
+			'site_id'       => $debug_site_id,
+			'access_token'  => $access_token,
+			'is_production' => ! self::is_staging(),
+		];
 	}
 }

@@ -55,13 +55,13 @@ class SendEntryTask extends Integration {
 	 */
 	public function create( $form_id, $entry_data ) {
 
-		$action_id = wpforms()->get( 'tasks' )
+		$action_id = wpforms()->obj( 'tasks' )
 			->create( self::LITE_CONNECT_TASK )
 			->params( $form_id, $entry_data )
 			->once( time() + wp_rand( 10, 60 ) * MINUTE_IN_SECONDS )
 			->register();
 
-		if ( is_null( $action_id ) ) {
+		if ( $action_id === null ) {
 			wpforms_log(
 				'Lite Connect: error creating the AS task',
 				[
@@ -130,6 +130,6 @@ class SendEntryTask extends Integration {
 		}
 
 		// Increase the entries count if the entry has been added successfully.
-		$this->increase_entries_count();
+		$this->increase_entries_count( $form_id );
 	}
 }

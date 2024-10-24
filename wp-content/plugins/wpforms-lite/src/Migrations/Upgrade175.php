@@ -37,11 +37,11 @@ class Upgrade175 extends UpgradeBase {
 		$group = Tasks::GROUP;
 		$sql   = "SELECT DISTINCT a.args FROM {$wpdb->prefix}actionscheduler_actions a
 					JOIN {$wpdb->prefix}actionscheduler_groups g ON g.group_id = a.group_id
-					WHERE g.slug = '$group' AND a.status IN ('pending', 'in-progress')";
+					WHERE g.slug = '$group' AND a.status IN ( 'pending', 'in-progress' )";
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$results = $wpdb->get_results( $sql, 'ARRAY_A' );
-		// phpcs:enable WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 
 		$results  = $results ? $results : [];
 		$meta_ids = [];
@@ -57,12 +57,10 @@ class Upgrade175 extends UpgradeBase {
 		$table_name = Meta::get_table_name();
 		$not_in     = $meta_ids ? wpforms_wpdb_prepare_in( $meta_ids ) : '0';
 
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->query(
-			"DELETE FROM {$table_name} WHERE id NOT IN ( {$not_in} )"
-		);
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query( "DELETE FROM $table_name WHERE id NOT IN ( $not_in )" );
 
-		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		return true;
 	}
@@ -83,8 +81,8 @@ class Upgrade175 extends UpgradeBase {
 			$wpdb->prefix . 'actionscheduler_groups',
 		];
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching
-		$tables    = $wpdb->get_col( "SHOW TABLES LIKE '" . $wpdb->prefix . "actionscheduler%'" );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$tables    = $wpdb->get_col( "SHOW TABLES LIKE '{$wpdb->prefix}actionscheduler%'" );
 		$intersect = array_values( array_intersect( $tables, $required_tables ) );
 
 		sort( $intersect );
