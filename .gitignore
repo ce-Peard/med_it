@@ -1,0 +1,5 @@
+# Ignorer tous les fichiers .wpress dans le répertoire des sauvegardes
+wp-content/ai1wm-backups/*.wpress
+
+# Ignorer le fichier de log
+wp-content/debug.log
