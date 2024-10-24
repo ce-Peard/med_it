@@ -36,7 +36,7 @@ define('DB_COLLATE', '');
 /** Disable WordPress file editor */
 define( 'DISALLOW_FILE_EDIT', true );
 
-define( 'COOKIEHASH', md5($_SERVER['WORDPRESS_DB_PASSWORD'] . 'secure cookies' .$_SERVER['WORDPRESS_DB_PASSWORD'] ) );	// Cookies hardening
+define( 'COOKIEHASH', md5(DB_PASSWORD . 'secure cookies' . DB_PASSWORD) );  // Cookies hardening
 
 define( 'WP_MEMORY_LIMIT', '256M' );
 
