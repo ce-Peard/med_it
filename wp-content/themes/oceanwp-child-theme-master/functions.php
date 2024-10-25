@@ -39,7 +39,11 @@ add_action( 'wp_enqueue_scripts', 'oceanwp_child_enqueue_parent_style' );
 
 function contact_btn($items, $args)
 {
-	$items .= '<li class="menu-item custom-btn menu-item-type-post_type menu-item-object-page"><a href="/contact" class="contact-btn menu-link">Contact Us</a></li>';
+	// Ajout de l'URL de la page de contact
+	$contact_page_url = get_permalink(get_page_by_path('contact'));
+	
+	// Ajouter le bouton de contact avec l'URL correcte
+	$items .= '<li class="menu-item custom-btn menu-item-type-post_type menu-item-object-page"><a href="' . esc_url($contact_page_url) . '" class="contact-btn menu-link">Contact Us</a></li>';
 	return $items;
 }
 
