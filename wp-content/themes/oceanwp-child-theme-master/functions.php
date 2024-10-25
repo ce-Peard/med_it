@@ -35,9 +35,12 @@ add_action( 'wp_enqueue_scripts', 'oceanwp_child_enqueue_parent_style' );
 
 
 
-function contact_btn( $items, $args ) {
-	$items .= '<a href="/contact" class="contact-btn">Nous contacter</a>';
+// Ajout balises <li> autour du bouton de contact
+
+function contact_btn($items, $args)
+{
+	$items .= '<li class="menu-item custom-btn menu-item-type-post_type menu-item-object-page"><a href="/contact" class="contact-btn menu-link">Contact Us</a></li>';
 	return $items;
 }
 
-add_filter( 'wp_nav_menu_items', 'contact_btn', 10, 2 );
+add_filter('wp_nav_menu_items', 'contact_btn', 10, 2);

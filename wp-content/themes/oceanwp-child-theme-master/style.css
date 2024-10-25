@@ -17,6 +17,16 @@ Version: 1.0
     padding:6px 16px;
     border-radius:6px;
 }
+
+#site-navigation-wrap .dropdown-menu > li.custom-btn {
+    margin-top: 22px;
+}
+
+#site-navigation-wrap .dropdown-menu > li.custom-btn > a {
+    color: black;
+    line-height: 40px;
+}
+
 .popup-overlay{
     position:fixed;
     width:100%;
@@ -101,4 +111,8 @@ Version: 1.0
     margin-top:20px;
     margin-bottom:10px;
     border-bottom: 1px solid #28babf;
+}
+
+#site-navigation .contact-btn {
+    vertical-align: middle;
 }
