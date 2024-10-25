@@ -1,1 +1,21 @@
-[24-Oct-2024 16:43:01 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[24-Oct-2024 17:09:24 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 08:05:28 UTC] Automatic updates starting...
+[25-Oct-2024 08:05:28 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 08:05:30 UTC] Automatic updates complete.
+[25-Oct-2024 08:10:18 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 10:17:56 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in C:\xampp\htdocs\medit\wp-includes\functions.php on line 7309
+[25-Oct-2024 10:18:36 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in C:\xampp\htdocs\medit\wp-includes\functions.php on line 7309
+[25-Oct-2024 11:44:00 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:09:13 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:13:15 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:18:04 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:18:27 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:18:34 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:20:01 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:20:40 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:22:41 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in C:\xampp\htdocs\medit\wp-includes\functions.php on line 7309
+[25-Oct-2024 12:23:31 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:23:36 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:23:40 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:33:13 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
+[25-Oct-2024 12:34:22 UTC] PHP Warning:  Array to string conversion in C:\xampp\htdocs\medit\wp-content\themes\oceanwp-child-theme-master\header.php on line 66
