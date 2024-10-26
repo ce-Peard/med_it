@@ -2186,16 +2186,7 @@ function wp_normalize_path( $path ) {
 	}
 
 	// Standardize all paths to use '/'.
-	// Vérifier si $path est une chaîne ou un tableau avant d'appeler str_replace
-	if (is_string($path) || is_array($path)) {
-		// Standardize all paths to use '/'.
-		$path = str_replace('\\', '/',
-			$path
-		);
-	} else {
-		// Gérer le cas où $path est null ou un autre type inattendu
-		$path = ''; // ou une autre valeur par défaut appropriée
-	}
+	$path = str_replace( '\\', '/', $path );
 
 	// Replace multiple slashes down to a singular, allowing for network shares having two slashes.
 	$path = preg_replace( '|(?<=.)/+|', '/', $path );
