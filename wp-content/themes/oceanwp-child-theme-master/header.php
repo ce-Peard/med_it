@@ -50,6 +50,7 @@ $description=get_field('description', 161);
 $lieu=get_field('lieu', 161);
 $date=get_field('date', 161);
 $lien=get_field('lien_google_maps', 161);
+// var_dump($lien);
 ?>
 
 <div class="popup-overlay">
@@ -78,14 +79,7 @@ $lien=get_field('lien_google_maps', 161);
 	</div>
 </div>
 
-<!-- Code pour fermer la popup -->
-<script>
-jQuery(document).ready(function($) {
-    $('.popup-close').click(function(){
-        $('.popup-overlay').hide();
-    });
-});
-</script>
+
 
 
 

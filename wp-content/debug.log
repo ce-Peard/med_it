@@ -1,2 +1,2 @@
-[26-Oct-2024 07:32:01 UTC] Automatic updates starting...
-[26-Oct-2024 07:32:02 UTC] Automatic updates complete.
+[28-Oct-2024 05:27:44 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in C:\xampp\htdocs\medit\wp-includes\functions.php on line 7300
+[28-Oct-2024 05:27:44 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in C:\xampp\htdocs\medit\wp-includes\functions.php on line 2189
